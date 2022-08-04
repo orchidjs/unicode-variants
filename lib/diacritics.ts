@@ -2,7 +2,7 @@
 
 type TDiacraticList = {[key:string]:string};
 
-var latin_pat:RegExp;
+var folded_pat:RegExp;
 const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}]'; // \u{2bc}
 const accent_reg = new RegExp(accent_pat,'gu');
 var diacritic_patterns:TDiacraticList;
@@ -103,54 +103,54 @@ export const generateDiacritics = (code_points:[[number,number]]):TDiacraticList
 		for(let i = code_range[0]; i <= code_range[1]; i++){
 
 			let diacritic	= String.fromCharCode(i);
-			let	latin		= asciifold(diacritic);
+			let	folded		= asciifold(diacritic);
 
-			if( latin == diacritic.toLowerCase() ){
+			if( folded == diacritic.toLowerCase() ){
 				continue;
 			}
 
-			// skip when latin is a string longer than 3 characters long
+			// skip when folded is a string longer than 3 characters long
 			// bc the resulting regex patterns will be long
 			// eg:
-			// latin صلى الله عليه وسلم length 18 code point 65018
-			// latin جل جلاله length 8 code point 65019
-			if( latin.length > 3 ){
+			// folded صلى الله عليه وسلم length 18 code point 65018
+			// folded جل جلاله length 8 code point 65019
+			if( folded.length > 3 ){
 				continue;
 			}
 
-			const latin_diacritics:string[] = diacritics[latin] || [latin];
-			const patt = new RegExp( escapeToPattern(latin_diacritics),'iu');
+			const folded_diacritics:string[] = diacritics[folded] || [folded];
+			const patt = new RegExp( escapeToPattern(folded_diacritics),'iu');
 			if( diacritic.match(patt) ){
 				continue;
 			}
-			latin_diacritics.push(diacritic);
-			diacritics[latin] = latin_diacritics;
+			folded_diacritics.push(diacritic);
+			diacritics[folded] = folded_diacritics;
 		}
 	});
 
 	// filter out if there's only one character in the list
 	// todo: this may not be needed
-	Object.keys(diacritics).forEach(latin => {
-		const latin_diacritics = diacritics[latin] || [];
-		if( latin_diacritics.length < 2 ){
-			delete diacritics[latin];
+	Object.keys(diacritics).forEach(folded => {
+		const folded_diacritics = diacritics[folded] || [];
+		if( folded_diacritics.length < 2 ){
+			delete diacritics[folded];
 		}
 	});
 
 
-	// latin character pattern
+	// folded character pattern
 	// match longer substrings first
-	let latin_chars	= Object.keys(diacritics).sort((a, b) => b.length - a.length );
-	latin_pat		= new RegExp('('+ escapeToPattern(latin_chars) + accent_pat + '*)','gu');
+	let folded_chars	= Object.keys(diacritics).sort((a, b) => b.length - a.length );
+	folded_pat		= new RegExp('('+ escapeToPattern(folded_chars) + accent_pat + '*)','gu');
 
 
 	// build diacritic patterns
 	// ae needs:
 	//	(?:(?:ae|Æ|Ǽ|Ǣ)|(?:A|Ⓐ|Ａ...)(?:E|ɛ|Ⓔ...))
 	var diacritic_patterns:TDiacraticList = {};
-	latin_chars.sort((a,b) => a.length -b.length).forEach((latin)=>{
+	folded_chars.sort((a,b) => a.length -b.length).forEach((folded)=>{
 
-		var substrings	= allSubstrings(latin);
+		var substrings	= allSubstrings(folded);
 		var pattern = substrings.map((sub_pat)=>{
 
 			sub_pat = sub_pat.map((l)=>{
@@ -163,7 +163,7 @@ export const generateDiacritics = (code_points:[[number,number]]):TDiacraticList
 			return arrayToPattern(sub_pat,'');
 		});
 
-		diacritic_patterns[latin] = arrayToPattern(pattern);
+		diacritic_patterns[folded] = arrayToPattern(pattern);
 	});
 
 
@@ -190,7 +190,7 @@ export const diacriticRegexPoints = (regex:string):string => {
 
 	const decomposed		= regex.normalize('NFKD').toLowerCase();
 
-	return decomposed.split(latin_pat).map((part:string)=>{
+	return decomposed.split(folded_pat).map((part:string)=>{
 
 		// "ﬄ" or "ffl"
 		const no_accent = asciifold(part);
