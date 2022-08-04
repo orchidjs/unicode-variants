@@ -97,6 +97,7 @@ export const allSubstrings = (input:string):string[][] => {
  */
 export const generateDiacritics = (code_points:[[number,number]]):TDiacraticList => {
 
+	let skipped = 0;
 	var diacritics:{[key:string]:string[]} = {};
 	code_points.forEach((code_range)=>{
 
@@ -125,15 +126,6 @@ export const generateDiacritics = (code_points:[[number,number]]):TDiacraticList
 			}
 			folded_diacritics.push(diacritic);
 			diacritics[folded] = folded_diacritics;
-		}
-	});
-
-	// filter out if there's only one character in the list
-	// todo: this may not be needed
-	Object.keys(diacritics).forEach(folded => {
-		const folded_diacritics = diacritics[folded] || [];
-		if( folded_diacritics.length < 2 ){
-			delete diacritics[folded];
 		}
 	});
 
