@@ -17,6 +17,26 @@ const convert_pat = new RegExp(Object.keys(latin_convert).join('|'),'gu');
 
 const code_points:[[number,number]] = [[ 0, 65535 ]];
 
+
+/**
+ * Return a diacritic insensitive regular expression for the given needle
+ *
+ */
+export const regExp = (needle:string):RegExp => {
+	needle = diacriticRegexPoints(needle);
+	return new RegExp(needle,'iu')
+}
+
+
+/**
+ * Initialize the list of diacritics from the give code point ranges
+ *
+ */
+export const initialize = (_code_points?:[[number,number]]) => {
+	if( diacritic_patterns !== undefined ) return;
+	diacritic_patterns = generateDiacritics(_code_points || code_points );
+}
+
 /**
  * Remove accents
  * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
@@ -162,14 +182,6 @@ export const generateDiacritics = (code_points:[[number,number]]):TDiacraticList
 	return diacritic_patterns;
 }
 
-/**
- * Initialize the list of diacritics from the give code point ranges
- *
- */
-export const initialize = (_code_points?:[[number,number]]) => {
-	if( diacritic_patterns !== undefined ) return;
-	diacritic_patterns = generateDiacritics(_code_points || code_points );
-}
 
 /**
  * Expand a regular expression pattern to include diacritics
@@ -197,10 +209,4 @@ export const diacriticRegexPoints = (regex:string):string => {
 		return part;
 	}).join('');
 
-}
-
-
-export const regExp = (needle:string):RegExp => {
-	needle = diacriticRegexPoints(needle);
-	return new RegExp(needle,'iu')
 }
