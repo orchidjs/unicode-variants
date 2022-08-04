@@ -42,10 +42,10 @@ ask() {
     done
 }
 
-# make sure the release is being made from the master branch
+# make sure the release is being made from the main branch
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-if [[ "$BRANCH" != "master" ]]; then
-  echo 'Not on master branch';
+if [[ "$BRANCH" != "main" ]]; then
+  echo 'Not on main branch';
   exit 1;
 fi
 
@@ -100,7 +100,7 @@ fi
 git add .
 git commit -a -m "v$VERSION Release"
 git tag "v$VERSION"
-git push origin master
+git push origin main
 git push origin --tags
 npm publish
 echo "\033[32mv${VERSION} released\033[0;39m"
