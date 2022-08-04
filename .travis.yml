@@ -7,6 +7,4 @@ node_js:
   - "16"
   - "18"
 script:
-  - npm run test
-notifications:
-  webhooks: https://coveralls.io/webhook
+  - npm run test:coveralls
