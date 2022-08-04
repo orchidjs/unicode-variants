@@ -1,0 +1,19 @@
+{
+	"include": ["../lib/**/*"],
+	"compilerOptions": {
+		"allowJs": true,
+	    "checkJs": true,
+	    "strict": true,
+		"target": "esnext",
+		"module": "esnext",
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"allowUnreachableCode": false,
+		"noUncheckedIndexedAccess": true,
+
+		"declaration": true,
+		"declarationDir": "../dist/types",
+		"isolatedModules": true,
+		"moduleResolution": "node"
+	},
+}

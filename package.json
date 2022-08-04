@@ -1,0 +1,58 @@
+{
+  "name": "@orchidjs/diacritics",
+  "version": "1.0.0",
+  "description": "Diacritic insensitive string matching utility",
+  "main": "dist/umd/diacritics.js",
+  "browser": "dist/umd/diacritics.js",
+  "module": "dist/esm/diacritics.js",
+  "types": "dist/types/diacritics.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/orchidjs/diacritics.git"
+  },
+  "scripts": {
+    "pretest": "npm run build",
+    "test": "mocha",
+    "test:typescript": "tsc -p .config --noemit",
+    "build": "npx rollup -c .config/rollup.config.js",
+	"build:types": "tsc -p .config --emitDeclarationOnly"
+  },
+  "keywords": [
+    "diacritic",
+    "diacritics",
+    "matching",
+    "search",
+    "find",
+    "string",
+    "text"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "files": [
+    "/dist",
+    "/lib"
+  ],
+  "dependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "@babel/preset-typescript": "^7.18.6",
+    "@rollup/plugin-babel": "^5.3.1",
+    "coveralls": "^3.1.1",
+    "mocha": "^10.0.0",
+    "rollup": "^2.77.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "typescript": "^4.7.4"
+  },
+  "browserslist": [
+    ">= 0.5%",
+    "not dead",
+    "Chrome >= 60",
+    "Firefox >= 60",
+	"Firefox ESR",
+    "Edge >= 17",
+    "iOS >= 12",
+    "Safari >= 12",
+    "not Explorer <= 11"
+  ]
+
+}
