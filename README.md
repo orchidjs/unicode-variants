@@ -18,12 +18,12 @@ const stringa   = 'أهلا'; // '\u{623}\u{647}\u{644}\u{627}'
 const stringb   = 'أهلا'; // '\u{627}\u{654}\u{647}\u{644}\u{627}'
 
 // without @orchidjs/diacritics
-const regex		= new RegExp(stringa);
+let regex       = new RegExp(stringa);
 console.log(regex.test(stringa)); // true
 console.log(regex.test(stringb)); // false
 
 // with @orchidjs/diacritics
-const regex     = diacritics.regExp(stringa);
+regex           = diacritics.regExp(stringa);
 console.log(regex.test(stringa)); // true
 console.log(regex.test(stringb)); // true
 
