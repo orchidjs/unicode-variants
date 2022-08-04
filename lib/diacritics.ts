@@ -117,7 +117,6 @@ export const allSubstrings = (input:string):string[][] => {
  */
 export const generateDiacritics = (code_points:[[number,number]]):TDiacraticList => {
 
-	let skipped = 0;
 	var diacritics:{[key:string]:string[]} = {};
 	code_points.forEach((code_range)=>{
 
