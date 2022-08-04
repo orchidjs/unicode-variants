@@ -2,8 +2,7 @@ var assert = require('assert');
 var diacritics = require('../dist/cjs/diacritics.js');
 
 describe('diacritics', function(){
-	this.timeout(10000);
-
+	
 	let prep = diacritics.initialize();
 
 	it('Should match composed and decomposed strings', () => {
