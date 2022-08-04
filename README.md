@@ -1,4 +1,7 @@
 # Diacritics
+[![Build Status](https://img.shields.io/travis/com/orchidjs/diacritics)](https://travis-ci.com/github/orchidjs/diacritics)
+[![Coverage Status](http://img.shields.io/coveralls/orchidjs/diacritics/master.svg?style=flat)](https://coveralls.io/r/orchidjs/diacritics)
+<a href="https://www.npmjs.com/package/@orchidjs/diacritics" class="m-1 d-inline-block"><img alt="npm (scoped)" src="https://img.shields.io/npm/v/@orchidjs/diacritics?color=007ec6"></a>
 
 Diacritics is a small utility for generating diacritic insensitive regular expressions.
 
