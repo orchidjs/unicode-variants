@@ -6,7 +6,7 @@
   "browser": "dist/umd/diacritics.js",
   "module": "dist/esm/diacritics.js",
   "types": "dist/types/diacritics.d.ts",
-  "type":"module",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/orchidjs/diacritics.git"
@@ -16,6 +16,7 @@
     "test": "jest",
     "test:coveralls": "npm run build && jest --coverage && cat ./coverage/lcov.info | coveralls",
     "test:typescript": "tsc -p .config --noemit",
+    "bench": "npx 0x -- node --zero-fill-buffers bench.js",
     "build": "npx rollup -c .config/rollup.config.js",
     "build:types": "tsc -p .config --emitDeclarationOnly"
   },
@@ -47,6 +48,7 @@
     "not Explorer <= 11"
   ],
   "devDependencies": {
+    "0x": "^5.4.1",
     "@babel/core": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-typescript": "^7.18.6",
