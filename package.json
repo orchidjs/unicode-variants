@@ -6,6 +6,7 @@
   "browser": "dist/umd/diacritics.js",
   "module": "dist/esm/diacritics.js",
   "types": "dist/types/diacritics.d.ts",
+  "type":"module",
   "repository": {
     "type": "git",
     "url": "https://github.com/orchidjs/diacritics.git"
