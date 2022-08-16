@@ -6,3 +6,4 @@ package-lock.json
 build
 x-*
 dist
+*.0x
