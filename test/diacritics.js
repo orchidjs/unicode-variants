@@ -6,6 +6,15 @@ describe('diacritics', function(){
 
 	let prep = diacritics.initialize();
 
+	// "TM" should match ™, ⓉM ...
+	it('Matching "TM"', () => {
+		let regex = diacritics.regExp('TM');
+		assert.equal(regex.test('tm'), true);
+		assert.equal(regex.test('™'), true);
+		assert.equal(regex.test('ⓉM'), true);
+		assert.equal(regex.test('Tℳ'), true);
+	});
+
 	it('Should match composed and decomposed strings', () => {
 
 		const composed		= 'أهلا'; // '\u{623}\u{647}\u{644}\u{627}'
