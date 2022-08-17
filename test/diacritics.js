@@ -6,55 +6,37 @@ describe('diacritics', function(){
 
 	let prep = diacritics.initialize();
 
+	/**
+	 * @param {string[]} combos
+	 */
+	const testCombos = (combos) => {
+
+		for( let stra of combos ){
+			let regex = diacritics.regExp(stra);
+
+			for( let strb of combos ){
+				assert.equal(regex.test(strb), true, `stra ${stra} strb ${strb} regex ${regex}`);
+			}
+		}
+	};
+
 	// "TM" should match ™, ⓉM ...
 	it('Matching "TM"', () => {
-		let regex = diacritics.regExp('TM');
-		assert.equal(regex.test('tm'), true);
-		assert.equal(regex.test('™'), true);
-		assert.equal(regex.test('ⓉM'), true);
-		assert.equal(regex.test('Tℳ'), true);
+		let combos = ['TM','tm','™','ⓉM','Tℳ'];
+		testCombos(combos);
 	});
 
 	// RSM should match "₨","M" or "R","℠"
 	it('Matching "RSM"', () => {
-		let regex = diacritics.regExp('RSM');
-		assert.equal(regex.test('₨M'), true);
-		assert.equal(regex.test('R℠'), true);
+		let combos = ['RSM','₨M','R℠'];
+		testCombos(combos);
 	});
 
-	// RSM should match "₨","M" or "R","℠"
+
 	it('Matching "1/4"', () => {
-		let regex = diacritics.regExp('1/4');
-		assert.equal(regex.test('1/4'), true);
-		assert.equal(regex.test('⅟4'), true);
-		assert.equal(regex.test('¼'), true);
+		let combos = ['1/4','⅟4','¼'];
+		testCombos(combos);
 	});
-
-	/*
-	it('Should match composed and decomposed strings', () => {
-
-		const composed		= 'أهلا'; // '\u{623}\u{647}\u{644}\u{627}'
-		const decomposed	= 'أهلا'; // '\u{627}\u{654}\u{647}\u{644}\u{627}'
-
-		assert.notEqual(composed,decomposed);
-
-
-		let regex = diacritics.regExp(composed);
-		assert.equal(regex.test(composed), true);
-
-
-
-		regex = diacritics.regExp(decomposed);
-		assert.equal(regex.test(decomposed), true);
-
-		regex = diacritics.regExp(composed);
-		assert.equal(regex.test(decomposed), true);
-
-		regex = diacritics.regExp(decomposed);
-		assert.equal(regex.test(composed), true);
-
-	});
-	*/
 
 
 	it('Should match all code points individually',()=>{
@@ -73,11 +55,6 @@ describe('diacritics', function(){
 			if( folded.length == 0 ){
 				continue;
 			}
-
-			//if( composed.trim().length == 0 ){
-			//	continue;
-			//}
-
 
 			let regex = regExp(composed);
 			if( regex ){
