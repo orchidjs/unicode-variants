@@ -15,6 +15,22 @@ describe('diacritics', function(){
 		assert.equal(regex.test('Tℳ'), true);
 	});
 
+	// RSM should match "₨","M" or "R","℠"
+	it('Matching "RSM"', () => {
+		let regex = diacritics.regExp('RSM');
+		assert.equal(regex.test('₨M'), true);
+		assert.equal(regex.test('R℠'), true);
+	});
+
+	// RSM should match "₨","M" or "R","℠"
+	it('Matching "1/4"', () => {
+		let regex = diacritics.regExp('1/4');
+		assert.equal(regex.test('1/4'), true);
+		assert.equal(regex.test('⅟4'), true);
+		assert.equal(regex.test('¼'), true);
+	});
+
+	/*
 	it('Should match composed and decomposed strings', () => {
 
 		const composed		= 'أهلا'; // '\u{623}\u{647}\u{644}\u{627}'
@@ -38,6 +54,7 @@ describe('diacritics', function(){
 		assert.equal(regex.test(composed), true);
 
 	});
+	*/
 
 
 	it('Should match all code points individually',()=>{
@@ -47,104 +64,78 @@ describe('diacritics', function(){
 			return new RegExp(needle,'iu')
 		};
 
-		diacritics.code_points.forEach((code_range)=>{
+		for( let value of diacritics.generator(diacritics.code_points) ){
 
-			for(let i = code_range[0]; i <= code_range[1]; i++){
+			let composed	= value.composed;
+			let folded		= value.folded;
+			let i			= value.code_point;
 
+			if( folded.length == 0 ){
+				continue;
+			}
 
-				let composed	= String.fromCharCode(i);
-				let decomposed	= diacritics.decompose(composed);
-				let folded		= diacritics.asciifold(composed);
-
-				if( folded.length == 0 ){
-					continue;
-				}
-
-				if( decomposed.length > 3 ){
-					continue;
-				}
-
-				if( composed.trim().length == 0 ){
-					continue;
-				}
-
-				let regex = regExp(composed);
-				if( regex ){
-					assert.equal(regex.test(composed), true, 'composed should match composed for composed: ' + composed + ', decomposed: ' + decomposed + ', regex: '+regex+' code point: '+i);
-					assert.equal(regex.test(decomposed), true, 'composed should match decomposed for composed: ' + composed + ', decomposed: ' + decomposed + ', regex: '+regex+' code point: '+i);
-				}
+			//if( composed.trim().length == 0 ){
+			//	continue;
+			//}
 
 
-				regex = regExp(decomposed);
-				if( regex ){
-					assert.equal(regex.test(decomposed), true, 'decomposed should match composed for composed: ' + composed + ', decomposed: ' + decomposed + ', regex: '+regex+' code point: '+i);
-					assert.equal(regex.test(composed), true, 'decomposed should match composed for composed: ' + composed + ', decomposed: ' + decomposed + ', regex: '+regex+' code point: '+i);
-				}
+			let regex = regExp(composed);
+			if( regex ){
+				assert.equal(regex.test(composed), true, 'composed should match composed for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
+				assert.equal(regex.test(folded), true, 'composed should match folded for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
+			}
 
-			};
-		});
+
+			regex = regExp(folded);
+			if( regex ){
+				assert.equal(regex.test(folded), true, 'folded should match composed for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
+				assert.equal(regex.test(composed), true, 'folded should match composed for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
+			}
+
+		};
+
 
 	});
 
 
 	it('Should match all code points in strings',()=>{
 
-		diacritics.code_points.forEach((code_range)=>{
+		let composeda	= [];
+		let decomposeda	= [];
+		let code_points	= [];
 
-			let composeda	= [];
-			let decomposeda	= [];
-			let code_points	= [];
+		for( let value of diacritics.generator(diacritics.code_points) ){
 
-			for(let i = code_range[0]; i < code_range[1]; i++){
+			code_points.push(value.code_point);
+			composeda.push(value.composed);
+			decomposeda.push(value.folded);
 
-				let char			= String.fromCharCode(i);
-				let char_decompsed	= diacritics.decompose(char);
-				let folded			= diacritics.asciifold(char);
-
-				if( folded.length == 0 ){
-					continue;
-				}
-
-				if( char_decompsed.length > 3 ){
-					continue;
-				}
-
-				if( char.trim().length == 0 ){
-					continue;
-				}
-
-				code_points.push(i);
-				composeda.push(char);
-				decomposeda.push(char_decompsed);
-
-				if( composeda.length >= 2 ){
-
-					let composed = composeda.join('');
-					let decomposed = decomposeda.join('');
-
-					let regex = diacritics.regExp(composed);
-					if( regex ){
-						assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
-						assert.equal(regex.test(decomposed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
-					}
-
-					regex = diacritics.regExp(decomposed);
-					if( regex ){
-						assert.equal(regex.test(decomposed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
-						assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
-					}
-
-					composeda	= [];
-					decomposeda	= [];
-					code_points	= [];
-
-				}
-
+			if( composeda.length < 2 ){
+				continue;
 			}
 
 
+			let composed = composeda.join('');
+			let decomposed = decomposeda.join('');
 
-		});
+			let regex = diacritics.regExp(composed);
+			if( regex ){
+				assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
+				assert.equal(regex.test(decomposed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
+			}
+
+			regex = diacritics.regExp(decomposed);
+			if( regex ){
+				assert.equal(regex.test(decomposed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
+				assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, decomposed: ${decomposeda} regex: ${regex} code points: ${code_points}`);
+			}
+
+			composeda	= [];
+			decomposeda	= [];
+			code_points	= [];
+
+		}
+
 
 	});
 
