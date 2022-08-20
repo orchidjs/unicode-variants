@@ -1,5 +1,5 @@
 var assert = require('assert');
-var D = require('../dist/cjs/diacritics.js');
+var D = require('../dist/cjs/index.js');
 
 
 describe('Matching', function(){

@@ -3,15 +3,15 @@
  * Usage:
  * 	> npm run bench
  */
-import * as diacritics from './lib/diacritics.js';
+import * as D from './lib/index.js';
 import * as assert from 'assert';
 
 const regExp = (needle) => {
-	needle = '^'+diacritics.diacriticRegexPoints(needle)+'$';
+	needle = '^'+D.getPattern(needle)+'$';
 	return new RegExp(needle,'iu')
 };
 
-for( let value of diacritics.generator(diacritics.code_points) ){
+for( let value of D.generator(D.code_points) ){
 
 	let composed	= value.composed;
 	let folded		= value.folded;

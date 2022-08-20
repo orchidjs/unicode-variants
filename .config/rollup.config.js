@@ -3,7 +3,7 @@ import { terser } from 'rollup-plugin-terser';
 import path from 'path';
 
 var configs = [];
-const banner = `/*! @orchidjs/diacritics | https://github.com/orchidjs/diacritics | Apache License (v2) */`;
+const banner = `/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */`;
 
 const extensions = [
   '.js', '.jsx', '.ts', '.tsx',
@@ -33,7 +33,7 @@ var terser_config = terser({
 
 // esm
 configs.push({
-	input: path.resolve(__dirname,'../lib/diacritics.js'),
+	input: path.resolve(__dirname,'../lib/index.js'),
 	output:{
 		dir: path.resolve(__dirname,'../dist/esm'),
 		format: 'esm',
@@ -46,7 +46,7 @@ configs.push({
 
 // cjs
 configs.push({
-	input: path.resolve(__dirname,'../lib/diacritics.js'),
+	input: path.resolve(__dirname,'../lib/index.js'),
 	output:{
 		dir: path.resolve(__dirname,'../dist/cjs'),
 		format: 'cjs',
@@ -60,10 +60,10 @@ configs.push({
 
 // umd
 configs.push({
-		input: path.resolve(__dirname,'../lib/diacritics.js'),
+		input: path.resolve(__dirname,'../lib/index.js'),
 		output: {
 			name: 'diacritics',
-			file: `dist/umd/diacritics.js`,
+			file: `dist/umd/index.js`,
 			format: 'umd',
 			preserveModules: false,
 			sourcemap: true,
@@ -76,10 +76,10 @@ configs.push({
 
 // umd min
 configs.push({
-		input: path.resolve(__dirname,'../lib/diacritics.js'),
+		input: path.resolve(__dirname,'../lib/index.js'),
 		output: {
 			name: 'diacritics',
-			file: `dist/umd/diacritics.min.js`,
+			file: `dist/umd/index.min.js`,
 			format: 'umd',
 			sourcemap: true,
 			banner: banner
