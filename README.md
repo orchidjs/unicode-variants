@@ -3,13 +3,7 @@
 [![Coverage Status](http://img.shields.io/coveralls/orchidjs/unicode-variants/master.svg?style=flat)](https://coveralls.io/r/orchidjs/unicode-variants)
 <a href="https://www.npmjs.com/package/@orchidjs/unicode-variants" class="m-1 d-inline-block"><img alt="npm (scoped)" src="https://img.shields.io/npm/v/@orchidjs/unicode-variants?color=007ec6"></a>
 
-Unicode Variants is a small utility for making string comparison faster and easier.
-
-
-
-```sh
-$ npm install @orchidjs/unicode-variants
-```
+A small utility for comparing strings with unicode variants faster and easier.
 
 ## Example
 
@@ -30,6 +24,12 @@ regex           = new RegExp(stringa,'ui');
 console.log(regex.test(stringa)); // true
 console.log(regex.test(stringb)); // true
 
+```
+
+## Installation
+
+```sh
+$ npm install @orchidjs/unicode-variants
 ```
 
 ## Contributing
