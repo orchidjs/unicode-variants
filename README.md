@@ -3,7 +3,14 @@
 [![Coverage Status](http://img.shields.io/coveralls/orchidjs/unicode-variants/master.svg?style=flat)](https://coveralls.io/r/orchidjs/unicode-variants)
 <a href="https://www.npmjs.com/package/@orchidjs/unicode-variants" class="m-1 d-inline-block"><img alt="npm (scoped)" src="https://img.shields.io/npm/v/@orchidjs/unicode-variants?color=007ec6"></a>
 
-A small utility for comparing strings with unicode variants faster and easier.
+A small utility for comparing strings with unicode variants
+
+Unicode-variants supports comparing:
+* 1/4 and ¼
+* TM and ™
+* À, Á, Â, Ã, Ä, Å, Ⓐ and A
+* キロ and ㌔
+* and thousands more
 
 ## Example
 
