@@ -26,7 +26,7 @@ console.log(regex.test(stringb)); // false
 
 // with @orchidjs/unicode-variants
 import {getPattern} from '@orchidjs/unicode-variants';
-let pattern		= getPattern(string);
+let pattern     = getPattern(stringa);
 regex           = new RegExp(stringa,'ui');
 console.log(regex.test(stringa)); // true
 console.log(regex.test(stringb)); // true
