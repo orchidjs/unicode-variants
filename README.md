@@ -5,7 +5,7 @@
 
 A small utility for comparing strings with unicode variants
 
-Unicode-variants supports comparing:
+Supported comparisons:
 * 1/4 and ¼
 * TM and ™
 * À, Á, Â, Ã, Ä, Å, Ⓐ and A
