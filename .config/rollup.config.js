@@ -33,7 +33,7 @@ var terser_config = terser({
 
 // esm
 configs.push({
-	input: path.resolve(__dirname,'../lib/index.js'),
+	input: path.resolve(__dirname,'../lib/index.mjs'),
 	output:{
 		dir: path.resolve(__dirname,'../dist/esm'),
 		format: 'esm',
@@ -46,7 +46,7 @@ configs.push({
 
 // cjs
 configs.push({
-	input: path.resolve(__dirname,'../lib/index.js'),
+	input: path.resolve(__dirname,'../lib/index.mjs'),
 	output:{
 		dir: path.resolve(__dirname,'../dist/cjs'),
 		format: 'cjs',
@@ -60,7 +60,7 @@ configs.push({
 
 // umd
 configs.push({
-		input: path.resolve(__dirname,'../lib/index.js'),
+		input: path.resolve(__dirname,'../lib/index.mjs'),
 		output: {
 			name: 'diacritics',
 			file: `dist/umd/index.js`,
@@ -76,7 +76,7 @@ configs.push({
 
 // umd min
 configs.push({
-		input: path.resolve(__dirname,'../lib/index.js'),
+		input: path.resolve(__dirname,'../lib/index.mjs'),
 		output: {
 			name: 'diacritics',
 			file: `dist/umd/index.min.js`,

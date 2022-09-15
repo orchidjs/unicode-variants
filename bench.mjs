@@ -3,7 +3,7 @@
  * Usage:
  * 	> npm run bench
  */
-import * as D from './lib/index.js';
+import * as D from './lib/index.mjs';
 import * as assert from 'assert';
 
 const regExp = (needle) => {
