@@ -134,7 +134,7 @@ describe('Matching', function(){
 			composeda.push(value.composed);
 			foldeda.push(value.folded);
 
-			if( composeda.length < 6 ){
+			if( composeda.length < 9 ){
 				continue;
 			}
 
@@ -150,14 +150,14 @@ describe('Matching', function(){
 			}
 
 			if( regex ){
-				assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} regex: ${regex} code points: ${code_points}`);
-				assert.equal(regex.test(folded), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} regex: ${regex} code points: ${code_points}`);
+				assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
+				assert.equal(regex.test(folded), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
 			}
 
 			regex = regExp(folded);
 			if( regex ){
-				assert.equal(regex.test(folded), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} regex: ${regex} code points: ${code_points}`);
-				assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} regex: ${regex} code points: ${code_points}`);
+				assert.equal(regex.test(folded), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
+				assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
 			}
 
 			composeda	= [];
