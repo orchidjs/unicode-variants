@@ -78,6 +78,11 @@ describe('Matching', function(){
 		testCombos(combos);
 	});
 
+	it('...',() =>{
+		let combos = ['...','…','‥.','.‥'];
+		testCombos(combos);
+	});
+
 	it('non-folding characters',() => {
 		let combos = ['a\tb','A\tb'];
 		testCombos(combos);
