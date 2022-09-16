@@ -5,10 +5,22 @@ var D = require('../dist/cjs/index.js');
 describe('Matching', function(){
 
 	let prep = D.initialize();
+	let longest = '';
+	let longest_needle = '';
 	const regExp = (needle) => {
-		needle = '^'+D.getPattern(needle)+'$';
-		return new RegExp(needle,'iu')
+		const pat = '^'+D.getPattern(needle)+'$';
+
+		if( pat.length > longest.length ){
+			longest = pat;
+			longest_needle = needle;
+		}
+
+		return new RegExp(pat,'iu')
 	};
+
+	afterAll(()=>{
+		console.log('longest',longest.length,longest_needle);
+	});
 
 	/**
 	 * @param {string[]} combos
@@ -122,9 +134,11 @@ describe('Matching', function(){
 
 	it('Should match all code points in strings',()=>{
 
-		let composeda	= [];
-		let foldeda	= [];
-		let code_points	= [];
+		let composeda		= [];
+		let foldeda			= [];
+		let code_points		= [];
+		let slowest			= [];
+		let slowest_time	= 0;
 
 		let all_code_points = [[0,65518]];
 
@@ -134,10 +148,11 @@ describe('Matching', function(){
 			composeda.push(value.composed);
 			foldeda.push(value.folded);
 
-			if( composeda.length < 9 ){
+			if( composeda.length < 10 ){
 				continue;
 			}
 
+			let start = Date.now();
 
 			let composed = composeda.join('');
 			let folded = foldeda.join('');
@@ -164,8 +179,16 @@ describe('Matching', function(){
 			foldeda	= [];
 			code_points	= [];
 
+			let elapsed = Date.now() - start;
+
+			if( elapsed > slowest_time ){
+				slowest_time = elapsed;
+				slowest = code_points;
+			}
+
 		}
 
+		console.log('slowest',slowest_time,'code points',slowest);
 
 	});
 

@@ -11,32 +11,56 @@ const regExp = (needle) => {
 	return new RegExp(needle,'iu')
 };
 
-for( let value of D.generator(D.code_points) ){
+let composeda		= [];
+let foldeda			= [];
+let code_points		= [];
+let slowest			= [];
+let slowest_time	= 0;
 
-	let composed	= value.composed;
-	let folded		= value.folded;
-	let i			= value.code_point;
+let all_code_points = [[0,65518]];
 
-	if( folded.length == 0 ){
+for( let value of D.generator(all_code_points) ){
+
+	code_points.push(value.code_point);
+	composeda.push(value.composed);
+	foldeda.push(value.folded);
+
+	if( composeda.length < 11 ){
 		continue;
 	}
 
-	if( composed.trim().length == 0 ){
-		continue;
+	let start = Date.now();
+
+	let composed = composeda.join('');
+	let folded = foldeda.join('');
+
+	let	regex;
+	try{
+		 regex = regExp(composed);
+	}catch(e){
+		throw new Error(`regex error for composed: ${composeda}, folded: ${foldeda} code points: ${code_points} message: ${e.message}`);
 	}
 
-
-	let regex = regExp(composed);
 	if( regex ){
-		assert.equal(regex.test(composed), true, 'composed should match composed for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
-		assert.equal(regex.test(folded), true, 'composed should match folded for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
+		assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
+		assert.equal(regex.test(folded), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
 	}
-
 
 	regex = regExp(folded);
 	if( regex ){
-		assert.equal(regex.test(folded), true, 'folded should match composed for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
-		assert.equal(regex.test(composed), true, 'folded should match composed for composed: ' + composed + ', folded: ' + folded + ', regex: '+regex+' code point: '+i);
+		assert.equal(regex.test(folded), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
+		assert.equal(regex.test(composed), true, `composed should match composed for composed: ${composeda}, folded: ${foldeda} code points: ${code_points}`);
 	}
 
-};
+	composeda	= [];
+	foldeda	= [];
+	code_points	= [];
+
+	let elapsed = Date.now() - start;
+
+	if( elapsed > slowest_time ){
+		slowest_time = elapsed;
+		slowest = code_points;
+	}
+
+}
