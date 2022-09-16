@@ -15,7 +15,7 @@
     "test": "jest",
     "test:coveralls": "npm run build && jest --coverage && cat ./coverage/lcov.info | coveralls",
     "test:typescript": "tsc -p .config --noemit",
-    "bench": "npx 0x -- node --zero-fill-buffers bench.js",
+    "bench": "npx 0x -- node --zero-fill-buffers bench.mjs",
     "build": "npx rollup -c .config/rollup.config.js",
     "build:types": "tsc -p .config --emitDeclarationOnly"
   },
