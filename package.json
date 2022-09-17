@@ -5,7 +5,7 @@
   "main": "dist/umd/index.js",
   "browser": "dist/umd/index.js",
   "module": "dist/esm/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types/index.d.mts",
   "repository": {
     "type": "git",
     "url": "https://github.com/orchidjs/unicode-variants.git"
