@@ -6,7 +6,7 @@ var configs = [];
 const banner = `/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */`;
 
 const extensions = [
-  '.js', '.jsx', '.ts', '.tsx',
+  '.js', '.jsx', '.ts', '.tsx', '.mjs',
 ];
 
 var babel_config = babel({
@@ -40,6 +40,7 @@ configs.push({
 		preserveModules: true,
 		sourcemap: true,
 		banner: banner,
+		entryFileNames: '[name].js',
 	},
 	plugins:[babel_config] // resolve_config
 });
