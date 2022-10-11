@@ -1,6 +1,6 @@
 var assert = require('assert');
 var D = require('../dist/cjs/index.js');
-
+var diacritics = require('../lib/diacritics.json');
 
 describe('Matching', function(){
 
@@ -98,6 +98,22 @@ describe('Matching', function(){
 	it('non-folding characters',() => {
 		let combos = ['a\tb','A\tb'];
 		testCombos(combos);
+	});
+
+	it('diacritic list',()=>{
+
+		for( let folded in diacritics ){
+			let chars = Array.from(diacritics[folded]);
+
+			for( let char of chars){
+				folded		= folded.toLowerCase();
+				char		= char.toLowerCase();
+
+				let combos	= [folded,char];
+				testCombos(combos);
+			}
+		}
+
 	});
 
 	it('Should match all code points individually',()=>{
