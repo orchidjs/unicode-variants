@@ -1,6 +1,6 @@
 {
   "name": "@orchidjs/unicode-variants",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Unicode variant string matching",
   "main": "dist/umd/index.js",
   "browser": "dist/umd/index.js",
