@@ -100,7 +100,15 @@ describe('Matching', function(){
 		testCombos(combos);
 	});
 
+	// https://github.com/orchidjs/tom-select/discussions/491
+	it('full-width characters',()=>{
+		let combos = ['アプ'];
+		testCombos(combos);
+	});
+
 	it('diacritic list',()=>{
+
+		let missing = {};
 
 		for( let folded in diacritics ){
 			let chars = Array.from(diacritics[folded]);
@@ -109,9 +117,26 @@ describe('Matching', function(){
 				folded		= folded.toLowerCase();
 				char		= char.toLowerCase();
 
-				let combos	= [folded,char];
-				testCombos(combos);
+				let regex = regExp(folded);
+				let r		= regex.test(char);
+				if( r ){
+					continue;
+				}
+
+				let temp = missing[folded] || '';
+
+				if( temp.indexOf(char) >= 0 ){
+					continue;
+				}
+
+				missing[folded] = temp + char;
+
 			}
+		}
+
+		if( Object.keys(missing).length > 0 ){
+			console.log('missing characters',JSON.stringify(missing,null,"\t"));
+			assert.equal(false, true, 'should not be missing characters. see console output');
 		}
 
 	});
