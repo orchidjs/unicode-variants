@@ -1,35 +1,25 @@
+import { setToPattern, arrayToPattern, escape_regex, sequencePattern } from './regex.js';
+import { allSubstrings } from './strings.js';
 
-/**
- * @typedef {{[key:string]:string}} TUnicodeMap
- * @typedef {{[key:string]:Set<string>}} TUnicodeSets
- * @typedef {[[number,number]]} TCodePoints
- * @typedef {{folded:string,composed:string,code_point:number}} TCodePointObj
- * @typedef {{start:number,end:number,length:number,substr:string}} TSequencePart
- */
+type TUnicodeMap = {[key:string]:string};
+type TUnicodeSets = {[key:string]:Set<string>};
+type TCodePoints = [[number,number]];
+type TCodePointObj = {folded:string,composed:string,code_point:number}
+type TSequencePart = {start:number,end:number,length:number,substr:string}
 
-
-import { setToPattern, arrayToPattern, escape_regex, sequencePattern, toArray } from './regex.mjs';
-import { allSubstrings } from './strings.mjs';
-
-
-/** @type {TCodePoints} */
-export const code_points = [[ 0, 65535 ]];
+export const code_points: TCodePoints = [[ 0, 65535 ]];
 
 const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
 
-/** @type {TUnicodeMap} */
-export let unicode_map;
+export let unicode_map: TUnicodeMap;
 
-/** @type {RegExp} */
-let multi_char_reg;
+let multi_char_reg: RegExp;
 
 const max_char_length = 3;
 
-/** @type {TUnicodeMap} */
-const latin_convert = {}
+const latin_convert: TUnicodeMap = {}
 
-/** @type {TUnicodeMap} */
-const latin_condensed = {
+const latin_condensed: TUnicodeMap = {
 	'/': '⁄∕',
 	'0': '߀',
 	"a": "ⱥɐɑ",
@@ -89,10 +79,8 @@ const convert_pat = new RegExp(Object.keys(latin_convert).join('|')+'|'+accent_p
 
 /**
  * Initialize the unicode_map from the give code point ranges
- *
- * @param {TCodePoints=} _code_points
  */
-export const initialize = (_code_points) => {
+export const initialize = (_code_points?: TCodePoints) => {
 	if( unicode_map !== undefined ) return;
 	unicode_map = generateMap(_code_points || code_points );
 }
@@ -101,10 +89,8 @@ export const initialize = (_code_points) => {
 /**
  * Helper method for normalize a string
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
- * @param {string} str
- * @param {string} form
  */
-export const normalize = (str,form='NFKD') => str.normalize(form);
+export const normalize = (str: string, form: string = 'NFKD') => str.normalize(form);
 
 
 
@@ -112,12 +98,10 @@ export const normalize = (str,form='NFKD') => str.normalize(form);
  * Remove accents without reordering string
  * calling str.normalize('NFKD') on \u{594}\u{595}\u{596} becomes \u{596}\u{594}\u{595}
  * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
- * @param {string} str
- * @return {string}
  */
-export const asciifold = (str) => {
+export const asciifold = (str: string): string => {
 
-	return toArray(str).reduce(
+	return Array.from(str).reduce(
 		/**
 		 * @param {string} result
 		 * @param {string} char
@@ -129,11 +113,7 @@ export const asciifold = (str) => {
 	);
 };
 
-/**
- * @param {string} str
- * @return {string}
- */
-export const _asciifold = (str) => {
+export const _asciifold = (str: string): string => {
 	str = normalize(str)
 		.toLowerCase()
 		.replace(convert_pat,(/** @type {string} */ char) => {
@@ -144,17 +124,10 @@ export const _asciifold = (str) => {
 	return normalize(str,'NFC')
 };
 
-
-
-
-
-
 /**
  * Generate a list of unicode variants from the list of code points
- * @param {TCodePoints} code_points
- * @yield {TCodePointObj}
  */
-export function* generator(code_points){
+export function* generator(code_points: TCodePoints): Generator<TCodePointObj> {
 
 	for(const [code_point_min, code_point_max] of code_points){
 		for(let i = code_point_min; i <= code_point_max; i++){
@@ -189,20 +162,12 @@ export function* generator(code_points){
 
 /**
  * Generate a unicode map from the list of code points
- * @param {TCodePoints} code_points
- * @return {TUnicodeSets}
  */
-export const generateSets = (code_points) => {
+export const generateSets = (code_points: TCodePoints): TUnicodeSets => {
 
-	/** @type {{[key:string]:Set<string>}} */
-	const unicode_sets = {};
+	const unicode_sets: {[key: string]: Set<string>} = {};
 
-
-	/**
-	 * @param {string} folded
-	 * @param {string} to_add
-	 */
-	const addMatching = (folded,to_add) => {
+	const addMatching = (folded: string, to_add: string) => {
 
 		/** @type {Set<string>} */
 		const folded_set = unicode_sets[folded] || new Set();
@@ -228,20 +193,13 @@ export const generateSets = (code_points) => {
 /**
  * Generate a unicode map from the list of code points
  * ae => (?:(?:ae|Æ|Ǽ|Ǣ)|(?:A|Ⓐ|Ａ...)(?:E|ɛ|Ⓔ...))
- *
- * @param {TCodePoints} code_points
- * @return {TUnicodeMap}
  */
-export const generateMap = (code_points) => {
-
-	/** @type {TUnicodeSets} */
+export const generateMap = (code_points: TCodePoints): TUnicodeMap => {
 	const unicode_sets = generateSets(code_points);
 
-	/** @type {TUnicodeMap} */
-	const unicode_map = {};
+	const unicode_map: TUnicodeMap = {};
 
-	/** @type {string[]} */
-	let multi_char = [];
+	let multi_char: string[] = [];
 
 	for( let folded in unicode_sets ){
 
@@ -264,14 +222,10 @@ export const generateMap = (code_points) => {
 
 
 /**
- * Map each element of an array from it's folded value to all possible unicode matches
- * @param {string[]} strings
- * @param {number} min_replacement
- * @return {string}
+ * Map each element of an array from its folded value to all possible unicode matches
  */
-export const mapSequence = (strings,min_replacement=1) =>{
+export const mapSequence = (strings: string[], min_replacement: number = 1): string =>{
 	let chars_replaced = 0;
-
 
 	strings = strings.map((str)=>{
 		if( unicode_map[str] ){
@@ -294,13 +248,8 @@ export const mapSequence = (strings,min_replacement=1) =>{
  * 'abc'
  * 		=> [['abc'],['ab','c'],['a','bc'],['a','b','c']]
  *		=> ['abc-pattern','ab-c-pattern'...]
- *
- *
- * @param {string} str
- * @param {number} min_replacement
- * @return {string}
  */
-export const substringsToPattern = (str,min_replacement=1) => {
+export const substringsToPattern = (str: string, min_replacement: number = 1): string => {
 
 	min_replacement = Math.max(min_replacement,str.length-1);
 
@@ -314,16 +263,13 @@ export const substringsToPattern = (str,min_replacement=1) => {
 /**
  * Convert an array of sequences into a pattern
  * [{start:0,end:3,length:3,substr:'iii'}...] => (?:iii...)
- *
- * @param {Sequence[]} sequences
- * @param {boolean} all
  */
-const sequencesToPattern = (sequences,all=true) => {
+const sequencesToPattern = (sequences: Sequence[], all: boolean = true) => {
 
 	let min_replacement = sequences.length > 1 ? 1 : 0;
 	return arrayToPattern(
 		sequences.map( (sequence) =>{
-			let seq = [];
+			let seq: string[] = [];
 			const len = all ? sequence.length() : sequence.length() - 1;
 			for( let j = 0; j < len; j++){
 				seq.push(substringsToPattern(sequence.substrs[j]||'',min_replacement));
@@ -336,10 +282,8 @@ const sequencesToPattern = (sequences,all=true) => {
 
 /**
  * Return true if the sequence is already in the sequences
- * @param {Sequence} needle_seq
- * @param {Sequence[]} sequences
  */
-const inSequences = (needle_seq, sequences) => {
+const inSequences = (needle_seq: Sequence, sequences: Sequence[]) => {
 
 	for(const seq of sequences){
 
@@ -401,22 +345,19 @@ const inSequences = (needle_seq, sequences) => {
 }
 
 class Sequence{
+	parts: TSequencePart[];
+	substrs: string[];
+	start: number;
+	end: number;
 
 	constructor(){
-
-		/** @type {TSequencePart[]} */
 		this.parts		= [];
-
-		/** @type {string[]} */
 		this.substrs	= [];
 		this.start		= 0;
 		this.end		= 0;
 	}
 
-	/**
-	 * @param {TSequencePart|undefined} part
-	 */
-	add(part){
+	add(part: TSequencePart|undefined){
 		if( part ){
 			this.parts.push(part);
 			this.substrs.push(part.substr);
@@ -433,11 +374,7 @@ class Sequence{
 		return this.parts.length;
 	}
 
-	/**
-	 * @param {number} position
-	 * @param {TSequencePart} last_piece
-	 */
-	clone(position, last_piece){
+	clone(position: number, last_piece: TSequencePart){
 		let clone = new Sequence();
 
 		let parts = JSON.parse(JSON.stringify(this.parts));
@@ -466,11 +403,8 @@ class Sequence{
  *	İĲ = IIJ = ⅡJ
  *
  * 	1/2/4
- *
- * @param {string} str
- * @return {string|undefined}
  */
-export const getPattern = (str) => {
+export const getPattern = (str: string): string | undefined => {
 	initialize();
 
 	str					= asciifold(str);
@@ -488,8 +422,8 @@ export const getPattern = (str) => {
 
 		// loop through sequences
 		// add either the char or multi_match
-		let overlapping		= [];
-		let added_types		= new Set();
+		let overlapping: Sequence[]	= [];
+		let added_types							= new Set();
 		for(const sequence of sequences){
 
 			const last_piece	= sequence.last();

@@ -3,10 +3,8 @@
  * Convert array of strings to a regular expression
  *	ex ['ab','a'] => (?:ab|a)
  * 	ex ['a','b'] => [ab]
- * @param {string[]} chars
- * @return {string}
  */
-export const arrayToPattern = (chars) =>{
+export const arrayToPattern = (chars: string[]): string => {
 
 	chars = chars.filter( Boolean );
 
@@ -17,11 +15,7 @@ export const arrayToPattern = (chars) =>{
 	return (maxValueLength(chars) == 1) ? '['+chars.join('')+']' : '(?:'+chars.join('|')+')';
 };
 
-/**
- * @param {string[]} array
- * @return {string}
- */
-export const sequencePattern = (array)=>{
+export const sequencePattern = (array: string[]): string => {
 
 	if( !hasDuplicates(array) ){
 		return array.join('');
@@ -61,54 +55,37 @@ export const sequencePattern = (array)=>{
  * Convert array of strings to a regular expression
  *	ex ['ab','a'] => (?:ab|a)
  * 	ex ['a','b'] => [ab]
- * @param {Set<string>} chars
- * @return {string}
  */
-export const setToPattern = (chars)=>{
-	let array = toArray(chars);
+export const setToPattern = (chars: Set<string>): string => {
+	let array = Array.from(chars);
 	return arrayToPattern(array);
 }
 
 
 
 /**
- *
  * https://stackoverflow.com/questions/7376598/in-javascript-how-do-i-check-if-an-array-has-duplicate-values
- * @param {any[]} array
  */
-export const hasDuplicates = (array) => {
+export const hasDuplicates = (array: any[]) => {
     return (new Set(array)).size !== array.length;
 }
 
 
 /**
  * https://stackoverflow.com/questions/63006601/why-does-u-throw-an-invalid-escape-error
- * @param {string} str
- * @return {string}
  */
-export const escape_regex = (str) => {
+export const escape_regex = (str: string): string => {
 	return (str + '').replace(/([\$\(\)\*\+\.\?\[\]\^\{\|\}\\])/gu, '\\$1');
 };
 
 /**
  * Return the max length of array values
- * @param {string[]} array
- *
  */
-export const maxValueLength = (array) => {
+export const maxValueLength = (array: string[]) => {
 	return array.reduce( (longest, value) => Math.max(longest,unicodeLength(value)),0);
 }
 
 
-/**
- * @param {string} str
- */
-export const unicodeLength = (str) => {
-	return toArray(str).length;
+export const unicodeLength = (str: string) => {
+	return Array.from(str).length;
 }
-
-/**
- * @param {any} p
- * @return {any[]}
- */
-export const toArray = (p) => Array.from(p);

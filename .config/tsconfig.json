@@ -1,5 +1,5 @@
 {
-	"include": ["../lib/index.mjs"],
+	"include": ["../lib/index.ts"],
 	"compilerOptions": {
 		"allowJs": true,
 	    "checkJs": true,
