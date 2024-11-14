@@ -1,4 +1,3 @@
-
 /**
  * Convert array of strings to a regular expression
  *	ex ['ab','a'] => (?:ab|a)

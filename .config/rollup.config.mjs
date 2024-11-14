@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-var configs = [];
+const configs = [];
 const banner = `/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */`;
 
 const extensions = [
@@ -32,35 +32,6 @@ var terser_config = terser({
     },
   },
 });
-
-
-// esm
-configs.push({
-	input: path.resolve(__dirname,'../lib/index.ts'),
-	output:{
-		dir: path.resolve(__dirname,'../dist/esm'),
-		format: 'esm',
-		preserveModules: true,
-		sourcemap: true,
-		banner: banner,
-		entryFileNames: '[name].js',
-	},
-	plugins:[babel_config] // resolve_config
-});
-
-// cjs
-configs.push({
-	input: path.resolve(__dirname,'../lib/index.ts'),
-	output:{
-		dir: path.resolve(__dirname,'../dist/cjs'),
-		format: 'cjs',
-		preserveModules: false,
-		sourcemap: true,
-		banner: banner,
-	},
-	plugins:[babel_config] //resolve_config
-});
-
 
 // umd
 configs.push({
@@ -93,6 +64,5 @@ configs.push({
 			terser_config
 		]
 	});
-
 
 export default configs;

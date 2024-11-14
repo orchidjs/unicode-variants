@@ -13,6 +13,7 @@
 		"noUncheckedIndexedAccess": true,
 		"declaration": true,
 		"isolatedModules": true,
-		"sourceMap": true
+		"sourceMap": true,
+		"rewriteRelativeImportExtensions": true,
 	},
 }

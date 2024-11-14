@@ -1,8 +1,8 @@
 .DS_store
+.vscode
 node_modules
 benchmark/report*.json
 coverage
-build
-x-*
 dist
+x-*
 *.0x

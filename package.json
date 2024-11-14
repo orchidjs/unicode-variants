@@ -19,13 +19,11 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "jest --coverage",
-    "test:typescript": "tsc -p .config --noemit",
     "bench": "npx 0x -- node --zero-fill-buffers bench.mjs",
-    "build": "npm run build:esm && npm run build:cjs",
+    "build": "rm -rf dist && npm run build:esm && npm run build:cjs && npm run build:umd",
     "build:esm": "tsc -p .config/tsconfig.esm.json",
     "build:cjs": "tsc -p .config/tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
-    "build:old": "npx rollup -c .config/rollup.config.mjs",
-    "build:types": "tsc -p .config --emitDeclarationOnly"
+    "build:umd": "npx rollup -c .config/rollup.config.mjs"
   },
   "keywords": [
     "unicode",

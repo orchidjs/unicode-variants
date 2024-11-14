@@ -1,5 +1,5 @@
-import { setToPattern, arrayToPattern, escape_regex, sequencePattern } from './regex.js';
-import { allSubstrings } from './strings.js';
+import { setToPattern, arrayToPattern, escape_regex, sequencePattern } from './regex.ts';
+import { allSubstrings } from './strings.ts';
 
 type TUnicodeMap = {[key:string]:string};
 type TUnicodeSets = {[key:string]:Set<string>};
