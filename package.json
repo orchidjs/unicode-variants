@@ -20,6 +20,7 @@
   "scripts": {
     "pretest": "npm run build",
     "test": "jest --coverage",
+    "test:types": "attw --pack .",
     "bench": "npx 0x -- node --zero-fill-buffers bench.mjs",
     "build": "rm -rf dist && npm run build:esm && npm run build:cjs && npm run build:umd",
     "build:esm": "tsc -p .config/tsconfig.esm.json",
@@ -42,7 +43,6 @@
     "/dist",
     "/lib"
   ],
-  "dependencies": {},
   "browserslist": [
     ">= 0.5%",
     "not dead",
@@ -55,12 +55,13 @@
     "not Explorer <= 11"
   ],
   "devDependencies": {
-    "0x": "^5.7.0",
+    "@arethetypeswrong/cli": "^0.17.0",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@babel/preset-typescript": "^7.26.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "^0.4.4",
+    "0x": "^5.7.0",
     "jest": "^29.7.0",
     "rollup": "^4.26.0",
     "typescript": "^5.7.1-rc"
