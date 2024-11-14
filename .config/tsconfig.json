@@ -1,19 +1,19 @@
 {
-	"include": ["../lib/index.mjs"],
+	"include": ["../lib/index.ts"],
 	"compilerOptions": {
 		"allowJs": true,
-	    "checkJs": true,
-	    "strict": true,
+		"checkJs": true,
+		"strict": true,
 		"target": "esnext",
 		"module": "esnext",
+		"moduleResolution": "node",
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"allowUnreachableCode": false,
 		"noUncheckedIndexedAccess": true,
-
 		"declaration": true,
-		"declarationDir": "../dist/types",
 		"isolatedModules": true,
-		"moduleResolution": "node"
+		"sourceMap": true,
+		"rewriteRelativeImportExtensions": true,
 	},
 }

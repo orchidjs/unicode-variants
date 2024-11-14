@@ -1,18 +1,12 @@
-
-
-
 /**
  * Get all possible combinations of substrings that add up to the given string
  * https://stackoverflow.com/questions/30169587/find-all-the-combination-of-substrings-that-add-up-to-the-given-string
- * @param {string} input
- * @return {string[][]}
  */
-export const allSubstrings = (input) => {
+export const allSubstrings = (input: string): string[][] => {
 
     if( input.length === 1) return [[input]];
 
-	/** @type {string[][]} */
-    let result = [];
+    let result: string[][] = [];
 
 	const start = input.substring(1);
     const suba = allSubstrings(start);
