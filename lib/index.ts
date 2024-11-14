@@ -1,11 +1,11 @@
 import { setToPattern, arrayToPattern, escape_regex, sequencePattern } from './regex.ts';
 import { allSubstrings } from './strings.ts';
 
-type TUnicodeMap = {[key:string]:string};
-type TUnicodeSets = {[key:string]:Set<string>};
-type TCodePoints = [[number,number]];
-type TCodePointObj = {folded:string,composed:string,code_point:number}
-type TSequencePart = {start:number,end:number,length:number,substr:string}
+export type TUnicodeMap = {[key:string]:string};
+export type TUnicodeSets = {[key:string]:Set<string>};
+export type TCodePoints = [[number,number]];
+export type TCodePointObj = {folded:string,composed:string,code_point:number}
+export type TSequencePart = {start:number,end:number,length:number,substr:string}
 
 export const code_points: TCodePoints = [[ 0, 65535 ]];
 
