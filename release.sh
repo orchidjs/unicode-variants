@@ -64,15 +64,9 @@ if ! [[ "$VERSION" =~ ^([0-9]\.[0-9]\.[0-9]) ]]; then
 fi
 
 
-# make sure tests pass
-if ! npm test; then
-	echo 'Tests failed... cannot create release'
-	exit
-fi
-
 # update package.json and package-lock.json
-if ! sed -i 's/"version": "[^"]*"/"version": "'$VERSION'"/' package.json; then
-	echo 'version not replaced in package-lock.json'
+if ! npm version --git-tag-version=false $VERSION; then
+	echo 'Version not updated'
 	exit
 fi
 
@@ -83,16 +77,16 @@ if ! npm run build; then
 fi
 
 
-# make sure types are up-to-date
-if ! npm run build:types; then
-	echo 'types not generated'
+# make sure tests pass
+if ! npm test; then
+	echo 'Tests failed... cannot create release'
 	exit
 fi
 
 
 # prompt before finalizing
 if ! ask "Version $VERSION is ready for release. Are you sure?"; then
-	echo 'release aborted'
+	echo 'Release aborted'
     exit
 fi
 
