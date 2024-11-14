@@ -3,6 +3,6 @@
 	"compilerOptions": {
 		"module": "CommonJS",
 		"rewriteRelativeImportExtensions": true,
-		"outDir": "../dist/esm",
+		"outDir": "../dist/cjs",
 	}
 }

@@ -298,10 +298,7 @@ const inSequences = (needle_seq: Sequence, sequences: Sequence[]) => {
 
 		let needle_parts	= needle_seq.parts;
 
-		/**
-		 * @param {TSequencePart} part
-		 */
-		const filter = (part) =>{
+		const filter = (part: TSequencePart) =>{
 
 			for(const needle_part of needle_parts){
 
