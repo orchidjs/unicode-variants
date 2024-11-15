@@ -27,7 +27,7 @@
     "build": "rm -rf dist && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:types",
     "build:esm": "tsc -p .config/tsconfig.esm.json",
     "build:cjs": "tsc -p .config/tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
-    "build:umd": "npx rollup -c .config/rollup.config.mjs",
+    "build:umd": "npx rollup -c .config/rollup.config.mjs && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
     "build:types": "tsc -p .config/tsconfig.types.json"
   },
   "keywords": [
