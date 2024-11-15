@@ -1,12 +1,12 @@
 {
-	"include": ["../lib/index.ts"],
+	"include": ["../lib/**/*"],
 	"compilerOptions": {
 		"allowJs": true,
 		"checkJs": true,
 		"strict": true,
-		"target": "esnext",
-		"module": "esnext",
-		"moduleResolution": "node",
+		"target": "ESNext",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
 		"noUnusedLocals": true,
 		"noUnusedParameters": true,
 		"allowUnreachableCode": false,
