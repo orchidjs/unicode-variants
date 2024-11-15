@@ -15,6 +15,8 @@
       "import": "./dist/esm/index.js",
       "require": "./dist/cjs/index.js"
     },
+    "./types/*": "./dist/types/*",
+    "./dist/*": "./dist/*",
     "./package.json": "./package.json"
   },
   "scripts": {
@@ -22,10 +24,11 @@
     "test": "jest --coverage",
     "test:types": "attw --pack .",
     "bench": "npx 0x -- node --zero-fill-buffers bench.mjs",
-    "build": "rm -rf dist && npm run build:esm && npm run build:cjs && npm run build:umd",
+    "build": "rm -rf dist && npm run build:esm && npm run build:cjs && npm run build:umd && npm run build:types",
     "build:esm": "tsc -p .config/tsconfig.esm.json",
     "build:cjs": "tsc -p .config/tsconfig.cjs.json && echo '{\"type\":\"commonjs\"}' > ./dist/cjs/package.json",
-    "build:umd": "npx rollup -c .config/rollup.config.mjs"
+    "build:umd": "npx rollup -c .config/rollup.config.mjs",
+    "build:types": "tsc -p .config/tsconfig.types.json"
   },
   "keywords": [
     "unicode",
