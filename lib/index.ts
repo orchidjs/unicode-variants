@@ -411,7 +411,7 @@ class Sequence{
  *
  * 	1/2/4
  */
-export const getPattern = (str: string): string | undefined => {
+export const getPattern = (str: string): string => {
 	initialize();
 
 	str					= asciifold(str);
