@@ -90,6 +90,35 @@ describe('Matching', function(){
 		testCombos(combos);
 	});
 
+	it('Should fold eszett to ss',()=>{
+		assert.equal(D.asciifold('ß'), 'ss');
+		assert.equal(D.asciifold('ẞ'), 'ss');
+		assert.equal(D.asciifold('Straße'), 'strasse');
+	});
+
+	it('eszett',()=>{
+		testCombos(['ß','ẞ','ss','SS','Ss','sS']);
+	});
+
+	it('eszett in words',()=>{
+		testCombos(['Straße','Strasse','STRAẞE','STRASSE']);
+		testCombos(['Fuß','Fuss','FUẞ','FUSS']);
+	});
+
+	it('overlapping eszett sequences',()=>{
+		testCombos(['sss','ßs','sß']);
+		testCombos(['ssss','ßß','ßss','ssß','sßs']);
+	});
+
+	it('Should not match eszett to a single s',()=>{
+		assert.equal(regExp('s').test('ß'), false);
+		assert.equal(regExp('s').test('ẞ'), false);
+		assert.equal(regExp('ß').test('s'), false);
+		assert.equal(regExp('ẞ').test('S'), false);
+		assert.equal(regExp('Straße').test('Strase'), false);
+		assert.equal(regExp('Strase').test('Straße'), false);
+	});
+
 	it('...',() =>{
 		let combos = ['...','…','‥.','.‥'];
 		testCombos(combos);
