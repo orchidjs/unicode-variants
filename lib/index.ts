@@ -3,11 +3,15 @@ import { allSubstrings } from './strings.ts';
 
 export type TUnicodeMap = {[key:string]:string};
 export type TUnicodeSets = {[key:string]:Set<string>};
-export type TCodePoints = [[number,number]];
+export type TCodePoints = [number,number][];
 export type TCodePointObj = {folded:string,composed:string,code_point:number}
 export type TSequencePart = {start:number,end:number,length:number,substr:string}
 
 export const code_points: TCodePoints = [[ 0, 65535 ]];
+
+// code_points without blocks that never fold: CJK Unified Ideographs, Yijing,
+// Yi, Lisu, Vai, Hangul, surrogates and private use.
+export const folding_code_points: TCodePoints = [[ 0x0000, 0x33FF ], [ 0xA640, 0xABFF ], [ 0xF900, 0xFFFF ]];
 
 const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
 
@@ -82,7 +86,7 @@ const convert_pat = new RegExp(Object.keys(latin_convert).join('|')+'|'+accent_p
  */
 export const initialize = (_code_points?: TCodePoints) => {
 	if( unicode_map !== undefined ) return;
-	unicode_map = generateMap(_code_points || code_points );
+	unicode_map = generateMap(_code_points || folding_code_points );
 }
 
 
@@ -131,6 +135,12 @@ export function* generator(code_points: TCodePoints): Generator<TCodePointObj> {
 
 	for(const [code_point_min, code_point_max] of code_points){
 		for(let i = code_point_min; i <= code_point_max; i++){
+
+			// Skip UTF-16 surrogate code units, which are not valid
+			// Unicode scalar values on their own.
+			if( i >= 0xD800 && i <= 0xDFFF ){
+				continue;
+			}
 
 			let composed		= String.fromCharCode(i);
 			let folded			= asciifold(composed);
