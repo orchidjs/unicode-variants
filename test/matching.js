@@ -141,6 +141,14 @@ describe('Matching', function(){
 
 	});
 
+	it('Should skip only code points that never fold',()=>{
+
+		const full		= [...D.generator(D.code_points)];
+		const reduced	= [...D.generator(D.folding_code_points)];
+
+		assert.deepEqual(reduced, full);
+	});
+
 	it('Should match all code points individually',()=>{
 
 
